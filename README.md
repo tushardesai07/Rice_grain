@@ -8,15 +8,24 @@ This project classifies five different types of rice grains using deep learning 
 ```
 rice_grain_classifier/
 ├── model/
-│   └── rice_grain_model.h5           # Trained model file
+│   └── rice_grain_model.h5             # Trained model file
+│
 ├── templates/
-│   └── index.html                    # Web UI template
+│   └── index.html                      # Web UI template (Flask)
+│
 ├── static/
-│   └── style.css                     # UI styling
-├── uploads/                          # Stores uploaded images temporarily
-├── app.py                            # Flask backend code
-├── train_model.py                    # Model training script
-└── README.md
+│   └── style.css                       # UI styling (CSS)
+│
+├── uploads/                            # Temporarily stores uploaded images (ignored in Git)
+│
+├── app.py                              # Flask backend script
+├── model(1).ipynb                      # Jupyter notebook for training the model
+├── Pseudocode_rice_grains.txt          # Pseudocode description of the project
+├── flow_diagram.png                    # Flow diagram image
+├── requirements.txt                    # Python dependencies
+├── README.md                           # Project documentation
+└── .gitignore                          # Ignore rules for Git
+
 ```
 
 ## 🔍 Features
@@ -43,7 +52,7 @@ You can download it from [[link-to-dataset](https://www.kaggle.com/datasets/mura
 
 ### 1. Train the model (optional if you have the `.h5` model)
 ```
-python train_model.py
+python model(1).ipynb
 ```
 
 ### 2. Start the Flask app
