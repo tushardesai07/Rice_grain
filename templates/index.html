@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rice Grain Classifier</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container fade-in">
+        <h1>🌾 Rice Grain Classifier</h1>
+        <p>Drop an image or click to upload</p>
+
+        <form id="uploadForm" action="/predict" method="POST" enctype="multipart/form-data">
+            <div id="dropZone">
+                <input type="file" name="image" id="imageInput" accept="image/*" required>
+                <label for="imageInput">📂 Drag & Drop or Browse</label>
+                <img id="imagePreview" src="#" alt="Preview" style="display:none;">
+            </div>
+            <div class="button-group">
+                <button type="submit">🔍 Predict</button>
+                <button type="button" id="resetBtn">♻️ Reset</button>
+            </div>
+            <div class="loader" id="loader" style="display:none;"></div>
+        </form>
+
+        {% if prediction %}
+            <div class="result fade-in">
+                <h2>Prediction Result:</h2>
+                <p>{{ prediction }}</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <script>
+        const imageInput = document.getElementById('imageInput');
+        const preview = document.getElementById('imagePreview');
+        const loader = document.getElementById('loader');
+        const form = document.getElementById('uploadForm');
+        const resetBtn = document.getElementById('resetBtn');
+        const dropZone = document.getElementById('dropZone');
+
+        imageInput.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                    preview.style.display = "block";
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        resetBtn.addEventListener('click', () => {
+            imageInput.value = "";
+            preview.src = "#";
+            preview.style.display = "none";
+        });
+
+        form.addEventListener('submit', () => {
+            loader.style.display = "inline-block";
+        });
+
+        dropZone.addEventListener("dragover", (e) => {
+            e.preventDefault();
+            dropZone.classList.add("dragging");
+        });
+
+        dropZone.addEventListener("dragleave", () => {
+            dropZone.classList.remove("dragging");
+        });
+
+        dropZone.addEventListener("drop", (e) => {
+            e.preventDefault();
+            dropZone.classList.remove("dragging");
+            imageInput.files = e.dataTransfer.files;
+            imageInput.dispatchEvent(new Event("change"));
+        });
+    </script>
+</body>
+</html>

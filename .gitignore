@@ -1,0 +1,7 @@
+requi/
+__pycache__/
+rice_grain_model.h5
+*.log
+*.tmp
+myenv/
+myenv/

@@ -1,0 +1,53 @@
+
+Pseudocode (Detailed):
+----------------------
+note: ##  Dataset
+
+Due to size constraints, the dataset (~70,000 images) is not included in this repository.
+
+You can download it from [link-to-dataset](https://www.kaggle.com/datasets/muratkokludataset/rice-image-dataset) and place it in a folder named `data/` at the project root:
+
+
+
+1. Data Preparation:
+   a. Define dataset path containing rice grain images in separate folders (e.g., Arborio, Basmati, etc.)
+   b. Initialize ImageDataGenerator with image augmentation and 20% validation split.
+   c. Create train and validation generators from directory using ImageDataGenerator.
+
+2. Model Building (Transfer Learning):
+   a. Load EfficientNetB4 model with pre-trained ImageNet weights.
+   b. Set 'include_top=False' to remove the original classification head.
+   c. Freeze base model layers to retain learned features.
+   d. Add new classification layers:
+      - GlobalAveragePooling2D to reduce spatial dimensions
+      - Dropout to prevent overfitting
+      - Dense layer with ReLU activation for learning non-linear patterns
+      - Another Dropout layer
+      - Final Dense layer with softmax activation for multi-class classification
+
+3. Model Compilation and Training:
+   a. Compile the model with Adam optimizer and categorical_crossentropy loss.
+   b. Set callbacks:
+      - EarlyStopping to stop training if validation loss doesn't improve
+      - ReduceLROnPlateau to reduce learning rate on plateaus
+      - ModelCheckpoint to save the best model
+   c. Train the model on training data with validation data for accuracy monitoring.
+
+4. Flask Web App for Prediction:
+   a. Initialize Flask app.
+   b. Load the trained model using load_model().
+   c. Create route for main page ("/") to upload an image.
+   d. On form submission:
+      - Receive uploaded image file
+      - Save it to 'uploads/' folder
+      - Preprocess image (resize to 224x224, convert to array, normalize)
+      - Use model to predict class probabilities
+      - Find the class with highest probability (argmax)
+      - Return predicted class label and confidence score to user on the same page
+
+5. Web Interface (HTML + CSS + JavaScript):
+   a. Build form to upload images with drag-and-drop support and preview.
+   b. Style form elements using CSS (green theme with smooth animations).
+   c. Use JavaScript to handle image preview, form reset, and loading spinner.
+
+END
